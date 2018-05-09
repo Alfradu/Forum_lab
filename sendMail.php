@@ -40,7 +40,7 @@ if (trim($_POST['mail'], " ") == ""){
 
     $db2 = NULL;
     $db = NULL;
-    echo '<h1>Password reset. Check you'."'".'r email inbox.</h1>';
+    echo '<h1>Password reset. Check you'."'".'re email inbox.</h1>';
     header("Refresh: 3, URL=login.php");
 }
 ?>
