@@ -2,36 +2,27 @@
 if (trim($_POST['name'], " ") == "" || trim($_POST['mail'], " ") == "" || trim($_POST['text'], " ") == ""){
     header("Location: index.php");
 } else {
-    // Create database connection using PHP Data Object (PDO)
-    $db = new mysqli('localhost', root, root, 'db');
-    $db2 = new PDO("mysql:host=localhost;dbname=db", root, root);
-    $table = 'comments';
-    $stmt = $db2->query('SELECT * from '.$table);
-    $tempID = 1;
-    //$location = "index.php";
-    $location = "thread.php?id=$tempID";
-    if(!$db)
-    {
-        echo mysqli_error();
-    }
-    $name = mysqli_real_escape_string($db, $_POST['name']);
-    $mail = mysqli_real_escape_string($db, $_POST['mail']);
-    $comm = mysqli_real_escape_string($db, $_POST['text']);
+    $db = new PDO("mysql:host=localhost;dbname=db", root, root);
 
     if ($_POST['type'] == "thread"){
-        $result = $db2->prepare("SELECT MAX(id) AS p_id FROM comments");
+        $result = $db->prepare("SELECT MAX(id) AS p_id FROM comments");
         $result->execute();
         $maxId = $result->fetch(PDO::FETCH_ASSOC);
-        $tempID += $maxId['p_id'];
+        $tempID = $maxId['p_id'] + 1;
         $location = "thread.php?id=$tempID";
     } else {
         $tempID = $_GET['id'];
         $location = "thread.php?id=$tempID#bottomOfPage";
     }
-    $query = "INSERT INTO comments (name, mail, comm, parent) VALUES ('$name', '$mail', '$comm', '$tempID')";
-    $db -> query($query);
+    //beroende av dbms: setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+    $stmt = $db->prepare("INSERT INTO comments (name, mail, comm, parent) VALUES (:name, :mail, :comm, :tempId)");
+    $stmt->execute(array(
+        ':name'    => $_POST['name'],
+        ':mail'    => $_POST['mail'],
+        ':comm'    => $_POST['text'],
+        ':tempId'  => $tempID
+    ));
     $db = NULL;
-    $db2 = NULL;
     header("Location: $location");
 }
 ?>
