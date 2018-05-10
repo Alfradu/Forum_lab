@@ -8,8 +8,7 @@ if(!isset($_SESSION["ReplyVisibility"])){
 }
 
 $db = new PDO("mysql:host=localhost;dbname=db", root, root);
-$table = 'comments';
-$stmt = $db->query('SELECT * from '.$table);
+$stmt = $db->query("SELECT * from comments");
 $db = NULL;
 $id = $_GET["id"]
 ?>
