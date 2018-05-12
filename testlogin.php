@@ -18,8 +18,7 @@ if (trim($_POST['mail'], " ") == "" || trim($_POST['pass'], " ") == ""){
         }
     }
     if ($bool == true){
-        if (password_verify($pass, $login_hash)){
-            session_start();
+        if (password_verify($_POST['pass'], $login_hash)){
             $_SESSION["mail"] = $_POST['mail'];
             echo '<h1>Logged in, redirecting to forum...</h1>';
             header("Refresh: 2, URL=index.php");
