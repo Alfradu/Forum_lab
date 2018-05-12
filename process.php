@@ -2,7 +2,7 @@
 if (trim($_POST['name'], " ") == "" || trim($_POST['mail'], " ") == "" || trim($_POST['text'], " ") == ""){
     header("Location: index.php");
 } else {
-    $db = new PDO("mysql:host=localhost;dbname=db", root, root);
+    $db = new PDO("mysql:host=localhost;dbname=db", 'root', 'root');
 
     if ($_POST['type'] == "thread"){
         $result = $db->prepare("SELECT MAX(id) AS p_id FROM comments");

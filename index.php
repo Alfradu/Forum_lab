@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-$db = new PDO("mysql:host=localhost;dbname=db", root, root);
+$db = new PDO("mysql:host=localhost;dbname=db", 'root', 'root');
 $stmt = $db->query("SELECT * from comments");
 $db = NULL;
 ?>
