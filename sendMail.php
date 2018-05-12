@@ -35,7 +35,7 @@ if (trim($_POST['mail'], " ") == ""){
         echo '<h1>Could not find email.</h1>';
     }
     $db = NULL;
-    header("Refresh: 100, URL=login.php");
+    header("Refresh: 3, URL=login.php");
 }
 ?>
 <html>
