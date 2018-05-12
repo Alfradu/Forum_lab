@@ -6,14 +6,9 @@ if(isset($_SESSION["mail"])){
 if (trim($_POST['mail'], " ") == ""){
     header("Location: login.php");
 } else {
-    $db = new mysqli('localhost', root, root, 'db');
-    $db2 = new PDO("mysql:host=localhost;dbname=db", root, root);
+    //$db = new mysqli('localhost', root, root, 'db');
+    $db = new PDO("mysql:host=localhost;dbname=db", 'root', 'root');
 
-    if(!$db)
-    {
-        echo mysqli_error();
-    }
-    $mail = mysqli_real_escape_string($db, $_POST['mail']);
     //generate new password
     $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
     $charactersLength = strlen($characters);
@@ -23,25 +18,24 @@ if (trim($_POST['mail'], " ") == ""){
     }
     $newPassword = password_hash($randomString, PASSWORD_DEFAULT);
 
-    $query = "UPDATE user SET pass='$newPassword' WHERE mail='$mail'";
-    if($db2->query($query)){
-        echo '<h1>Updated table.</h1>';
-    } else {
-        echo '<h1>failed update on table.</h1>';
-    }
-    //mail:
-    $subject = "Password reset from Forum!";
-    $body = "Hello! This is your new password:".$randomString;
-    if (mail($mail, $subject, $body)) {
-    echo("<p>Email successfully sent!</p>");
-    } else {
-    echo("<p>Email delivery failed…</p>");
-    }
+    $stmt = $db->prepare("UPDATE user SET pass='$newPassword' WHERE mail= :mail");
+    if($stmt->execute([
+        ':mail' => $_POST['mail']
+    ])){
+        $to = $_POST['mail'];
+        $subject = "Password reset from Forum!";
+        $body = "Hello! This is your new password: ".$randomString;
 
-    $db2 = NULL;
+        if (mail($_POST['mail'], $subject, $body)) {
+            echo("<p>Email successfully sent!</p>");
+        } else {
+            echo("<p>Email delivery failed…</p>");
+        }
+    } else {
+        echo '<h1>Could not find email.</h1>';
+    }
     $db = NULL;
-    echo '<h1>Password reset. Check you'."'".'re email inbox.</h1>';
-    header("Refresh: 3, URL=login.php");
+    header("Refresh: 100, URL=login.php");
 }
 ?>
 <html>
