@@ -8,16 +8,15 @@ if (trim($_POST['mail'], " ") == ""){
 } else {
     //$db = new mysqli('localhost', root, root, 'db');
     $db = new PDO("mysql:host=localhost;dbname=db", 'root', 'root');
-    
-    //generate new password
+
+    //generate token
     $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
     $charactersLength = strlen($characters);
-    $randomString = '';
-    for ($i = 0; $i < 10; $i++) {
-        $randomString .= $characters[rand(0, $charactersLength - 1)];
+    $token = '';
+    for ($i = 0; $i < 5; $i++) {
+        $token .= $characters[rand(0, $charactersLength - 1)];
     }
-    $newPassword = password_hash($randomString, PASSWORD_DEFAULT);
-
+    //send user to token page and reset password there instead...
     $stmt = $db->prepare("UPDATE user SET pass='$newPassword' WHERE mail= :mail");
     if($stmt->execute([
         ':mail' => $_POST['mail']
