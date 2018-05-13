@@ -7,7 +7,6 @@ if (trim($_POST['mail'], " ") == "" || trim($_POST['pass'], " ") == ""){
     header("Location: register.php");
 } else {
     $db = new PDO("mysql:host=localhost;dbname=db", 'root', 'root');
-    $table = 'user';
     $stmt = $db->prepare("SELECT * from user");
     $stmt->execute();
     $bool = false;
@@ -22,11 +21,16 @@ if (trim($_POST['mail'], " ") == "" || trim($_POST['pass'], " ") == ""){
         echo '<h1>Email already in use.</h1>';
         header("Refresh: 2, URL=register.php");
     } else {
-        $hashed_pass = password_hash($_POST['pass'], PASSWORD_DEFAULT);
-        $stmt = $db->prepare("INSERT INTO user (mail, pass) VALUES (:mail, :hashpass)");
+        //requires php ver 7.*
+        //probably just use openssl_random_pseudo_bytes() for versions below 7.
+        //normally password_hash() would be the "safe" function to use
+        $salt = random_bytes(14);
+        $hashed_pass = sha1($_POST['pass'].$salt);
+        $stmt = $db->prepare("INSERT INTO user (mail, pass, salt) VALUES (:mail, :hashpass, :salt)");
         $stmt->execute([
             ':mail' => $_POST['mail'],
-            ':hashpass' => $hashed_pass
+            ':hashpass' => $hashed_pass,
+            ':salt' => $salt
         ]);
         $db = NULL;
         echo '<h1>Registration complete.</h1>';

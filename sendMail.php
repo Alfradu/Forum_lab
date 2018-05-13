@@ -8,7 +8,7 @@ if (trim($_POST['mail'], " ") == ""){
 } else {
     //$db = new mysqli('localhost', root, root, 'db');
     $db = new PDO("mysql:host=localhost;dbname=db", 'root', 'root');
-
+    
     //generate new password
     $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
     $charactersLength = strlen($characters);
