@@ -6,33 +6,21 @@ if(isset($_SESSION["mail"])){
 if (trim($_POST['mail'], " ") == "" || trim($_POST['pass'], " ") == ""){
     header("Location: login.php");
 } else {
-    $db2 = new mysqli('localhost', root, root, 'db');
-    $db = new PDO("mysql:host=localhost;dbname=db", root, root);
-    $table = 'user';
-    $stmt = $db->query('SELECT * from '.$table);
-
-    if(!$db)
-    {
-        echo mysqli_error();
-    }
-
-    $mail = mysqli_real_escape_string($db2, $_POST['mail']);
-    $pass = mysqli_real_escape_string($db2, $_POST['pass']);
-    $bool = 'false';
-
+    $db = new PDO("mysql:host=localhost;dbname=db", 'root', 'root');
+    $stmt = $db->prepare("SELECT * from user");
+    $db = NULL;
+    $stmt->execute();
+    $bool = false;
     while ($rows = $stmt->fetch()){
-        if ($mail == $rows['mail']){
+        if ( $_POST['mail'] == $rows['mail']){
             $login_hash = $rows['pass'];
+            $login_salt = $rows['salt'];
             $bool = true;
         }
     }
-    if ($bool == 'true'){
-        $db = NULL;
-        $bd2 = NULL;
-
-        if (password_verify($pass, $login_hash)){
-            session_start();
-            $_SESSION["mail"] = $mail;
+    if ($bool == true){
+        if (sha1($_POST['pass'].$login_salt) === $login_hash){
+            $_SESSION["mail"] = $_POST['mail'];
             echo '<h1>Logged in, redirecting to forum...</h1>';
             header("Refresh: 2, URL=index.php");
         } else {
@@ -40,8 +28,6 @@ if (trim($_POST['mail'], " ") == "" || trim($_POST['pass'], " ") == ""){
             header("Refresh: 2, URL=login.php");
         }
     } else {
-        $bd2 = NULL;
-        $db = NULL;
         echo '<h1>Password or mail didn'."'".'t match.</h1>';
         header("Refresh: 2, URL=login.php");
     }

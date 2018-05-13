@@ -4,6 +4,7 @@ if(isset($_SESSION["mail"])){
     header("Location: index.php");
 }
 ?>
+
 <html>
     <head>
         <title>Registration</title>
@@ -33,6 +34,5 @@ if(isset($_SESSION["mail"])){
                 </form>
             </div>
         </div>
-
     </body>
 </html>

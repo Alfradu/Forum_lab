@@ -6,41 +6,34 @@ if(isset($_SESSION["mail"])){
 if (trim($_POST['mail'], " ") == ""){
     header("Location: login.php");
 } else {
-    $db = new mysqli('localhost', root, root, 'db');
-    $db2 = new PDO("mysql:host=localhost;dbname=db", root, root);
+    //$db = new mysqli('localhost', root, root, 'db');
+    $db = new PDO("mysql:host=localhost;dbname=db", 'root', 'root');
 
-    if(!$db)
-    {
-        echo mysqli_error();
-    }
-    $mail = mysqli_real_escape_string($db, $_POST['mail']);
-    //generate new password
+    //generate token
     $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
     $charactersLength = strlen($characters);
-    $randomString = '';
-    for ($i = 0; $i < 10; $i++) {
-        $randomString .= $characters[rand(0, $charactersLength - 1)];
+    $token = '';
+    for ($i = 0; $i < 5; $i++) {
+        $token .= $characters[rand(0, $charactersLength - 1)];
     }
-    $newPassword = password_hash($randomString, PASSWORD_DEFAULT);
+    //send user to token page and reset password there instead...
+    $stmt = $db->prepare("UPDATE user SET pass='$newPassword' WHERE mail= :mail");
+    if($stmt->execute([
+        ':mail' => $_POST['mail']
+    ])){
+        $to = $_POST['mail'];
+        $subject = "Password reset from Forum!";
+        $body = "Hello! This is your new password: ".$randomString;
 
-    $query = "UPDATE user SET pass='$newPassword' WHERE mail='$mail'";
-    if($db2->query($query)){
-        echo '<h1>Updated table.</h1>';
+        if (mail($_POST['mail'], $subject, $body)) {
+            echo("<p>Email successfully sent!</p>");
+        } else {
+            echo("<p>Email delivery failed…</p>");
+        }
     } else {
-        echo '<h1>failed update on table.</h1>';
+        echo '<h1>Could not find email.</h1>';
     }
-    //mail:
-    $subject = "Password reset from Forum!";
-    $body = "Hello! This is your new password:".$randomString;
-    if (mail($mail, $subject, $body)) {
-    echo("<p>Email successfully sent!</p>");
-    } else {
-    echo("<p>Email delivery failed…</p>");
-    }
-
-    $db2 = NULL;
     $db = NULL;
-    echo '<h1>Password reset. Check you'."'".'re email inbox.</h1>';
     header("Refresh: 3, URL=login.php");
 }
 ?>
