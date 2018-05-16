@@ -4,11 +4,14 @@ function getDb() {
     $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     return $db;
 }
-function prep($db, $sql) {
+function prep($db, $sql, $arr=[]) {
     try {
         $stmt = $db->prepare($sql);
-        $stmt->execute();
-        $db = NULL;
+        if (count($arr) > 0){
+            $stmt->execute($arr);
+        } else {
+            $stmt->execute();
+        }
         return $stmt;
     } catch (PDOException $e) {
          handle_sql_errors($sql, $e->getMessage());
