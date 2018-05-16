@@ -3,12 +3,10 @@ ini_set('display_errors', 'On');
 error_reporting(E_ALL | E_STRICT);
 
 session_start();
-//require 'include/models/db.php';
-//$db = new Db();
-//$stmt = $db->query("SELECT * from comments");
-$db = new PDO("mysql:host=localhost;dbname=db", 'root', 'root');
-$stmt = $db->query("SELECT * from comments");
-$db = NULL;
+require 'include/models/db.php';
+$db = getDb();
+$stmt = prep($db, "SELECT * from comments");
+
 ?>
 <html>
     <head>
