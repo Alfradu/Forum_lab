@@ -3,7 +3,24 @@ session_start();
 if(isset($_SESSION["mail"])){
     header("Location: index.php");
 }
-if (trim($_POST['mail'], " ") == "" || trim($_POST['pass'], " ") == ""){
+$splitMail = explode("@", $_POST['mail']);
+if (count($splitMail) == 2){
+    $nextSplit = explode(".", $splitMail[1]);
+}
+$passCheck = true;
+if (strlen($_POST['pass']) < 8) {
+    $passCheck = false;
+}
+preg_match('/[0-9]+/', $_POST['pass'], $matches, PREG_UNMATCHED_AS_NULL);
+if ($matches == null) {
+    $passCheck = false;
+}
+preg_match('/[a-zA-Z]+/', $_POST['pass'], $matches, PREG_UNMATCHED_AS_NULL);
+if ($matches == null) {
+    $passCheck = false;
+}
+
+if (!(count($nextSplit) == 2) || $passCheck == false){
     header("Location: register.php");
 } else {
     $db = new PDO("mysql:host=localhost;dbname=db", 'root', 'root');
@@ -21,10 +38,14 @@ if (trim($_POST['mail'], " ") == "" || trim($_POST['pass'], " ") == ""){
         echo '<h1>Email already in use.</h1>';
         header("Refresh: 2, URL=register.php");
     } else {
-        //requires php ver 7.*
-        //probably just use openssl_random_pseudo_bytes() for versions below 7.
-        //normally password_hash() would be the "safe" function to use
-        $salt = random_bytes(14);
+        //gen salt
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $charactersLength = strlen($characters);
+        $salt = '';
+        for ($i = 0; $i < 14; $i++) {
+            $salt .= $characters[rand(0, $charactersLength - 1)];
+        }
+
         $hashed_pass = sha1($_POST['pass'].$salt);
         $stmt = $db->prepare("INSERT INTO user (mail, pass, salt) VALUES (:mail, :hashpass, :salt)");
         $stmt->execute([
