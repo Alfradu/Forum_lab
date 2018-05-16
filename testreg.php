@@ -22,7 +22,6 @@ if (!verify($assoc)){
         }
     }
     if ($bool == true){
-        $db = NULL;
         echo '<h1>Email already in use.</h1>';
         header("Refresh: 2, URL=register.php");
     } else {
@@ -33,15 +32,13 @@ if (!verify($assoc)){
         for ($i = 0; $i < 14; $i++) {
             $salt .= $characters[rand(0, $charactersLength - 1)];
         }
-
         $hashed_pass = sha1($_POST['pass'].$salt);
-        $stmt = $db->prepare("INSERT INTO user (mail, pass, salt) VALUES (:mail, :hashpass, :salt)");
-        $stmt->execute([
+
+        prep($db, "INSERT INTO user (mail, pass, salt) VALUES (:mail, :hashpass, :salt)", [
             ':mail' => $_POST['mail'],
             ':hashpass' => $hashed_pass,
             ':salt' => $salt
         ]);
-        $db = NULL;
         echo '<h1>Registration complete.</h1>';
         header("Refresh: 2, URL=login.php");
     }
