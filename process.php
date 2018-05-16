@@ -1,5 +1,9 @@
 <?php
-if (trim($_POST['name'], " ") == "" || trim($_POST['mail'], " ") == "" || trim($_POST['text'], " ") == ""){
+$splitMail = explode("@", $_POST['mail']);
+if (count($splitMail) == 2){
+    $nextSplit = explode(".", $splitMail[1]);
+}
+if (trim($_POST['name']) == "" || !(count($nextSplit) == 2) || trim($_POST['text']) == ""){
     header("Location: index.php");
 } else {
     $db = new PDO("mysql:host=localhost;dbname=db", 'root', 'root');
