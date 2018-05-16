@@ -1,31 +1,19 @@
 <?php
+include 'include/models/authorizer.php';
+include 'include/models/db.php';
+
 session_start();
 if(isset($_SESSION["mail"])){
     header("Location: index.php");
 }
-$splitMail = explode("@", $_POST['mail']);
-if (count($splitMail) == 2){
-    $nextSplit = explode(".", $splitMail[1]);
-}
-$passCheck = true;
-if (strlen($_POST['pass']) < 8) {
-    $passCheck = false;
-}
-preg_match('/[0-9]+/', $_POST['pass'], $matches, PREG_UNMATCHED_AS_NULL);
-if ($matches == null) {
-    $passCheck = false;
-}
-preg_match('/[a-zA-Z]+/', $_POST['pass'], $matches, PREG_UNMATCHED_AS_NULL);
-if ($matches == null) {
-    $passCheck = false;
-}
 
-if (!(count($nextSplit) == 2) || $passCheck == false){
+$assoc['pass'] = $_POST['pass'];
+$assoc['mail'] = $_POST['mail'];
+if (!verify($assoc)){
     header("Location: register.php");
 } else {
-    $db = new PDO("mysql:host=localhost;dbname=db", 'root', 'root');
-    $stmt = $db->prepare("SELECT * from user");
-    $stmt->execute();
+    $db = getDb();
+    $stmt = prep($db, "SELECT * from user");
     $bool = false;
 
     while ($rows = $stmt->fetch()){
