@@ -3,7 +3,23 @@ session_start();
 if(isset($_SESSION["mail"])){
     header("Location: index.php");
 }
-if (trim($_POST['mail'], " ") == "" || trim($_POST['pass'], " ") == ""){
+$splitMail = explode("@", $_POST['mail']);
+if (count($splitMail) == 2){
+    $nextSplit = explode(".", $splitMail[1]);
+}
+$passCheck = true;
+if (strlen($_POST['pass']) < 8) {
+    $passCheck = false;
+}
+preg_match('/[0-9]+/', $_POST['pass'], $matches, PREG_UNMATCHED_AS_NULL);
+if ($matches == null) {
+    $passCheck = false;
+}
+preg_match('/[a-zA-Z]+/', $_POST['pass'], $matches, PREG_UNMATCHED_AS_NULL);
+if ($matches == null) {
+    $passCheck = false;
+}
+if (!(count($nextSplit) == 2) || $passCheck == false){
     header("Location: login.php");
 } else {
     $db = new PDO("mysql:host=localhost;dbname=db", 'root', 'root');
