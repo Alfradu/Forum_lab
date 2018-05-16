@@ -3,7 +3,7 @@ ini_set('display_errors', 'On');
 error_reporting(E_ALL | E_STRICT);
 
 session_start();
-require 'include/models/db.php';
+include 'include/models/db.php';
 $db = getDb();
 $stmt = prep($db, "SELECT * from comments");
 
