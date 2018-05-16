@@ -1,25 +1,24 @@
 <?php
-$splitMail = explode("@", $_POST['mail']);
-if (count($splitMail) == 2){
-    $nextSplit = explode(".", $splitMail[1]);
-}
-if (trim($_POST['name']) == "" || !(count($nextSplit) == 2) || trim($_POST['text']) == ""){
+include 'include/models/authorizer.php';
+include 'include/models/db.php';
+
+$assoc['name'] = $_POST['name'];
+$assoc['mail'] = $_POST['mail'];
+$assoc['text'] = $_POST['text'];
+if (!verify($assoc)){
     header("Location: index.php");
 } else {
-    $db = new PDO("mysql:host=localhost;dbname=db", 'root', 'root');
+    $db = getDb();
     if ($_POST['type'] == "thread"){
-        $result = $db->prepare("SELECT MAX(id) AS p_id FROM comments");
-        $result->execute();
-        $maxId = $result->fetch(PDO::FETCH_ASSOC);
+        $stmt = prep($db, "SELECT MAX(id) AS p_id FROM comments");
+        $maxId = $stmt->fetch(PDO::FETCH_ASSOC);
         $tempID = $maxId['p_id'] + 1;
         $location = "thread.php?id=$tempID";
     } else {
         $tempID = $_GET['id'];
         $location = "thread.php?id=$tempID#bottomOfPage";
     }
-    //beroende av dbms: setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
-    $stmt = $db->prepare("INSERT INTO comments (name, mail, comm, parent) VALUES (:name, :mail, :comm, :tempId)");
-    $stmt->execute([
+    prep($db, "INSERT INTO comments (name, mail, comm, parent) VALUES (:name, :mail, :comm, :tempId)", [
         ':name'    => $_POST['name'],
         ':mail'    => $_POST['mail'],
         ':comm'    => $_POST['text'],
