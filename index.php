@@ -1,9 +1,9 @@
 <?php
-ini_set('display_errors', 'On');
-error_reporting(E_ALL | E_STRICT);
-
-session_start();
 include 'include/models/db.php';
+
+//ini_set('display_errors', 'On');
+//error_reporting(E_ALL | E_STRICT);
+session_start();
 $db = getDb();
 $stmt = prep($db, "SELECT * from comments");
 
