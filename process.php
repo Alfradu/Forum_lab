@@ -24,7 +24,6 @@ if (!verify($assoc)){
         ':comm'    => $_POST['text'],
         ':tempId'  => $tempID
     ]);
-    $db = NULL;
     header("Location: $location");
 }
 ?>
