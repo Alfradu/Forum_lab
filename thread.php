@@ -7,10 +7,10 @@ if(!isset($_GET["id"])){
 if(!isset($_SESSION["ReplyVisibility"])){
     $_SESSION["ReplyVisibility"] = false;
 }
+require 'include/models/db.php';
+$db = getDb();
+$stmt = prep($db, "SELECT * from comments");
 
-$db = new PDO("mysql:host=localhost;dbname=db", 'root', 'root');
-$stmt = $db->query("SELECT * from comments");
-$db = NULL;
 $id = $_GET["id"]
 ?>
 
