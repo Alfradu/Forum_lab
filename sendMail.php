@@ -3,7 +3,11 @@ session_start();
 if(isset($_SESSION["mail"])){
     header("Location: index.php");
 }
-if (trim($_POST['mail'], " ") == ""){
+$splitMail = explode("@", $_POST['mail']);
+if (count($splitMail) == 2){
+    $nextSplit = explode(".", $splitMail[1]);
+}
+if !(count($nextSplit) == 2){
     header("Location: login.php");
 } else {
     //$db = new mysqli('localhost', root, root, 'db');
