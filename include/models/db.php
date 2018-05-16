@@ -15,9 +15,8 @@ function prep($db, $sql) {
     }
 }
 function handle_sql_errors($query, $error_message) {
-    echo '<pre>';
     echo $query;
-    echo '</pre>';
+    echo '<br>';
     echo $error_message;
     die;
 }
