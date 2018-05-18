@@ -1,8 +1,6 @@
 <?php
-include 'include/models/authorizer.php';
-include 'include/models/db.php';
+include 'include/bootstrap.php';
 
-session_start();
 if(isset($_SESSION["mail"])){
     header("Location: index.php");
 }
@@ -12,8 +10,7 @@ $assoc['mail'] = $_POST['mail'];
 if (!verify($assoc)){
     header("Location: register.php");
 } else {
-    $db = getDb();
-    $stmt = prep($db, "SELECT * from user");
+    $stmt = getUsers();
     $bool = false;
 
     while ($rows = $stmt->fetch()){
@@ -25,20 +22,7 @@ if (!verify($assoc)){
         echo '<h1>Email already in use.</h1>';
         header("Refresh: 2, URL=register.php");
     } else {
-        //gen salt
-        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        $charactersLength = strlen($characters);
-        $salt = '';
-        for ($i = 0; $i < 14; $i++) {
-            $salt .= $characters[rand(0, $charactersLength - 1)];
-        }
-        $hashed_pass = sha1($_POST['pass'].$salt);
-
-        prep($db, "INSERT INTO user (mail, pass, salt) VALUES (:mail, :hashpass, :salt)", [
-            ':mail' => $_POST['mail'],
-            ':hashpass' => $hashed_pass,
-            ':salt' => $salt
-        ]);
+        makeUser(genString(14));
         echo '<h1>Registration complete.</h1>';
         header("Refresh: 2, URL=login.php");
     }

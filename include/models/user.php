@@ -1,11 +1,11 @@
 <?php
-function makeUser() {
-    return "INSERT INTO user (mail, pass, salt) VALUES (:mail, :hashpass, :salt)";
-}
-function createPost() {
-    return "INSERT INTO comments (name, mail, comm, parent) VALUES (:name, :mail, :comm, :tempId)";
-}
-function getUsers() {
-    return "SELECT * from user";
+function genString($length){
+    $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    $charactersLength = strlen($characters);
+    $token = '';
+    for ($i = 0; $i < $length; $i++) {
+        $token .= $characters[rand(0, $charactersLength - 1)];
+    }
+    return $token;
 }
 ?>

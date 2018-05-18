@@ -1,8 +1,6 @@
 <?php
-include 'include/models/authorizer.php';
-include 'include/models/db.php';
+include 'include/bootstrap.php';
 
-session_start();
 if(isset($_SESSION["mail"])){
     header("Location: index.php");
 }
@@ -11,8 +9,7 @@ $assoc['mail'] = $_POST['mail'];
 if (!verify($assoc)){
     header("Location: login.php");
 } else {
-    $db = getDb();
-    $stmt = prep($db, "SELECT * from user");
+    $stmt = getUsers();
     $bool = false;
     while ($rows = $stmt->fetch()){
         if ( $_POST['mail'] == $rows['mail']){

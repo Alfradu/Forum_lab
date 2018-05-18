@@ -1,5 +1,6 @@
 <?php
-session_start();
+include 'include/bootstrap.php';
+
 if(isset($_SESSION["mail"])){
     header("Location: index.php");
 }

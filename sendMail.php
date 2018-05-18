@@ -1,33 +1,27 @@
 <?php
-session_start();
+include 'include/bootstrap.php';
+
 if(isset($_SESSION["mail"])){
     header("Location: index.php");
 }
-$splitMail = explode("@", $_POST['mail']);
-if (count($splitMail) == 2){
-    $nextSplit = explode(".", $splitMail[1]);
-}
-if !(count($nextSplit) == 2){
+
+$assoc['mail'] = $_POST['mail'];
+if (!verify($assoc)){
     header("Location: login.php");
 } else {
-    //$db = new mysqli('localhost', root, root, 'db');
-    $db = new PDO("mysql:host=localhost;dbname=db", 'root', 'root');
-
-    //generate token
-    $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    $charactersLength = strlen($characters);
-    $token = '';
-    for ($i = 0; $i < 5; $i++) {
-        $token .= $characters[rand(0, $charactersLength - 1)];
-    }
     //send user to token page and reset password there instead...
-    $stmt = $db->prepare("UPDATE user SET pass='$newPassword' WHERE mail= :mail");
-    if($stmt->execute([
-        ':mail' => $_POST['mail']
-    ])){
+    $stmt = getUsers();
+    $bool = false;
+    while ($rows = $stmt->fetch()){
+        if ( $_POST['mail'] == $rows['mail']){
+            $bool = true;
+        }
+    }
+    if($bool){
+        updatePass();
         $to = $_POST['mail'];
         $subject = "Password reset from Forum!";
-        $body = "Hello! This is your new password: ".$randomString;
+        $body = "Hello! This is your new password: ".genString(14);
 
         if (mail($_POST['mail'], $subject, $body)) {
             echo("<p>Email successfully sent!</p>");
@@ -37,7 +31,6 @@ if !(count($nextSplit) == 2){
     } else {
         echo '<h1>Could not find email.</h1>';
     }
-    $db = NULL;
     header("Refresh: 3, URL=login.php");
 }
 ?>

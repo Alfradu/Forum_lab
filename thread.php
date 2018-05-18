@@ -1,16 +1,15 @@
 <?php
-session_start();
+include 'include/bootstrap.php';
+
 if(!isset($_GET["id"])){
     header("Location: index.php");
 }
 //Hide or show reply field
-if(!isset($_SESSION["ReplyVisibility"])){
-    $_SESSION["ReplyVisibility"] = false;
-}
-require 'include/models/db.php';
-$db = getDb();
-$stmt = prep($db, "SELECT * from comments");
+//if(!isset($_SESSION["ReplyVisibility"])){
+//    $_SESSION["ReplyVisibility"] = false;
+//}
 
+$stmt = getcomments();
 $id = $_GET["id"]
 ?>
 
