@@ -7,12 +7,6 @@ if(isset($_SESSION["mail"])){
 ?>
 
 <html>
-    <head>
-        <title>Registration</title>
-        <meta charset="UTF-8">
-        <link rel="stylesheet" href="assets/css/style.css">
-        <script src="assets/js/script.js"></script>
-    </head>
     <body>
         <div class="topbar">
             <label>[</label><a href="index.php" class="likeabutton">Forum</a><label>]</label>
