@@ -34,7 +34,3 @@ if (!verify($assoc)){
     header("Refresh: 3, URL=login.php");
 }
 ?>
-<html>
-    <body>
-    </body>
-</html>

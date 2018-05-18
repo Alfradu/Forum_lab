@@ -28,7 +28,3 @@ if (!verify($assoc)){
     }
 }
 ?>
-<html>
-    <body>
-    </body>
-</html>
