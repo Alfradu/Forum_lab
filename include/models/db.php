@@ -1,14 +1,16 @@
 <?php
-function getDb() {
+function getDb($sql) {
     $db = new PDO("mysql:host=localhost;dbname=db", 'root', 'root');
     //$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    return $db;
+    $stmt = $db->prepare($sql);
+    $db = NULL;
+    return $stmt;
 }
 function makeUser($salt){
     $hashed_pass = sha1($_POST['pass'].$salt);
     $sql = "INSERT INTO user (mail, pass, salt) VALUES (:mail, :hashpass, :salt)";
     try {
-        $stmt = getDb()->prepare($sql);
+        $stmt = getDb($sql);
         $stmt->execute([
             ':mail' => $_POST['mail'],
             ':hashpass' => $hashed_pass,
@@ -22,7 +24,7 @@ function makeUser($salt){
 function createPost($tempID){
     $sql = "INSERT INTO comments (name, mail, comm, parent) VALUES (:name, :mail, :comm, :tempId)";
     try {
-        $stmt = getDb()->prepare($sql);
+        $stmt = getDb($sql);
         $stmt->execute([
             ':name'    => $_POST['name'],
             ':mail'    => $_POST['mail'],
@@ -37,7 +39,7 @@ function createPost($tempID){
 function getMaxId(){
     $sql = "SELECT MAX(id) AS p_id FROM comments";
     try {
-        $stmt = getDb()->prepare($sql);
+        $stmt = getDb($sql);
         $stmt->execute();
         return $stmt;
     } catch (PDOException $e) {
@@ -47,7 +49,7 @@ function getMaxId(){
 function getUsers(){
     $sql = "SELECT * from user";
     try {
-        $stmt = getDb()->prepare($sql);
+        $stmt = getDb($sql);
         $stmt->execute();
         return $stmt;
     } catch (PDOException $e) {
@@ -57,7 +59,7 @@ function getUsers(){
 function getComments(){
     $sql = "SELECT * from comments";
     try {
-        $stmt = getDb()->prepare($sql);
+        $stmt = getDb($sql);
         $stmt->execute();
         return $stmt;
     } catch (PDOException $e) {
@@ -67,9 +69,33 @@ function getComments(){
 function updatePass(){
     $sql = "UPDATE user SET pass='$token' WHERE mail= :mail";
     try {
-        $stmt = getDb()->prepare($sql);
+        $stmt = getDb($sql);
         $stmt->execute([
             ':mail' => $_POST['mail']
+        ]);
+        return $stmt;
+    } catch (PDOException $e) {
+         handle_sql_errors($sql, $e->getMessage());
+    }
+}
+function deletePost($id){
+    $sql = "DELETE FROM comments WHERE id= :id ";
+    try {
+        $stmt = getDb($sql);
+        $stmt->execute([
+            ':id' => $id
+        ]);
+        return $stmt;
+    } catch (PDOException $e) {
+         handle_sql_errors($sql, $e->getMessage());
+    }
+}
+function deleteThread($id){
+    $sql = "DELETE FROM comments WHERE parent= :id ";
+    try {
+        $stmt = getDb($sql);
+        $stmt->execute([
+            ':id' => $id
         ]);
         return $stmt;
     } catch (PDOException $e) {
