@@ -13,7 +13,12 @@ $stmt = getcomments();
                 echo '<label>[</label><a href="register.php" class="likeabutton">Register</a><label>]</label>';
                 echo '<label>[</label><a href="login.php" class="likeabutton">Login</a><label>]</label>';
             }
+            echo '<label>[</label><a href="javascript: deleteComment();" class="likeabutton">Delete</a><label>]</label>';
             ?>
+            <form name="delForm" action="delete.php" method="post">
+                <input type="hidden" name="checkArr" value=""/>
+                <input type="hidden" name="currentPage" value="index.php"/>
+            </form>
             <h1> Forum </h1>
         </div>
         <?php
@@ -37,7 +42,8 @@ $stmt = getcomments();
             <?php
                 while($rows = $stmt->fetch()){
                     if ($rows["parent"] == $rows["id"]){
-                        echo '<div class="flowchild"><input type="checkbox" name="box"/> <label style="color:#b294ac">'.$rows["name"]."</label> ".$rows["mail"]." (".$rows["date"].") No.";
+                        echo '<div class="flowchild"> <input type="checkbox" class= "check" name="'.$rows["id"].'"/> ';
+                        echo '<label style="color:#b294ac">'.$rows["name"]."</label> ".$rows["mail"]." (".$rows["date"].") No.";
                         echo '<a href="thread.php?id='.$rows["id"].'" name="'.$rows["id"].'" class="liketext" >'.$rows["id"].'</a> ';
                         echo '<label>[</label><a href="thread.php?id='.$rows["id"].'" class="likeabutton">Reply</a><label>]</label> <br><br>';
                     if ($rows["comm"][0] == '>')

@@ -44,3 +44,15 @@ function addToComment(postnr){
     //alert("ran addToComment");
     comm.value = comm.value + " >>" + postnr + "\n";
 }
+function deleteComment(){
+    var x = document.getElementsByClassName("check");
+    var arr = [];
+    var i;
+    for (i = 0; i < x.length; i++) {
+        if (x[i].checked == true){
+            arr.push(x[i].name);
+        }
+    }
+    document.delForm.checkArr.value = arr;
+    document.delForm.submit();
+}

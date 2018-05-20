@@ -4,10 +4,6 @@ include 'include/bootstrap.php';
 if(!isset($_GET["id"])){
     header("Location: index.php");
 }
-//Hide or show reply field
-//if(!isset($_SESSION["ReplyVisibility"])){
-//    $_SESSION["ReplyVisibility"] = false;
-//}
 
 $stmt = getcomments();
 $id = $_GET["id"]
@@ -24,7 +20,12 @@ $id = $_GET["id"]
                 echo '<label>[</label><a href="register.php" class="likeabutton">Register</a><label>]</label>';
                 echo '<label>[</label><a href="login.php" class="likeabutton">Login</a><label>]</label>';
             }
+            echo '<label>[</label><a href="javascript: deleteComment();" class="likeabutton">Delete</a><label>]</label>';
             ?>
+            <form name="delForm" action="delete.php" method="post">
+                <input type="hidden" name="checkArr" value=""/>
+                <input type="hidden" name="currentPage" value="index.php"/>
+            </form>
             <h1> Forum </h1>
         </div>
         <div id="form">
@@ -56,16 +57,19 @@ $id = $_GET["id"]
                 while($rows = $stmt->fetch()){
                     if ($rows["parent"] == $id){
                         if ($rows["parent"] == $rows["id"]){
-                            echo '<div class="flowparent"><input type="checkbox" name="box"/> <label style="color:#b294ac">'.$rows["name"]."</label> ".$rows["mail"]." (".$rows["date"].") No.";
+                            echo '<div class="flowparent"><label style="color:#b294ac">'.$rows["name"]."</label> ".$rows["mail"]." (".$rows["date"].") No.";
                             echo '<a href="javascript:addToComment('.$rows["id"].');" name="'.$rows["id"].'" class="liketext" >'.$rows["id"].'</a> <br><br>';
                         } else {
-                            echo '<div class="flowchild"><input type="checkbox" name="box"/> '.$rows["name"]." ".$rows["mail"]." (".$rows["date"].") No.";
+                            echo '<div class="flowchild"><input type="checkbox" class= "check" name="'.$rows["id"].'"/> ';
+                            echo $rows["name"]." ".$rows["mail"]." (".$rows["date"].") No.";
                             echo '<a href="javascript:addToComment('.$rows["id"].');" name="'.$rows["id"].'" class="liketext" >'.$rows["id"].'</a> <br><br>';
                         }
                         if ($rows["comm"][0] == '>') //fix so entire text doesnt turn green
                         {
-                            //$arr = explode('')
-                            echo '<div class="innerchild"><span style="color:#789922">'.$rows["comm"].'</span></div>';
+                            $arr = explode(">", $rows["comm"]);
+                            echo '<div class="innerchild">';
+                            echo '<span style="color:#789922">'.$rows["comm"].'</span>';
+                            echo '</div>';
                         }
                         else
                         {
