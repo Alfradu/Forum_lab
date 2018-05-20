@@ -123,6 +123,12 @@ h1
 {
     text-align: center;
 }
+pre
+{
+    font-family: Tahoma, Tahoma, sans-serif;
+    font-size: 12px;
+    white-space: pre-wrap;
+}
 body
 {
     font-family: Tahoma, Tahoma, sans-serif;
@@ -136,6 +142,11 @@ a:hover
 }
 .likeabutton {
     text-decoration: none;
+    display: inline-block;
+    color: #78a1bd;
+}
+.likealink {
+    text-decoration: underline;
     display: inline-block;
     color: #78a1bd;
 }

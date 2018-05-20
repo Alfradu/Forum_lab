@@ -46,15 +46,16 @@ $stmt = getcomments();
                         echo '<label style="color:#b294ac">'.$rows["name"]."</label> ".$rows["mail"]." (".$rows["date"].") No.";
                         echo '<a href="thread.php?id='.$rows["id"].'" name="'.$rows["id"].'" class="liketext" >'.$rows["id"].'</a> ';
                         echo '<label>[</label><a href="thread.php?id='.$rows["id"].'" class="likeabutton">Reply</a><label>]</label> <br><br>';
-                    if ($rows["comm"][0] == '>')
-                    {
-                        echo '<div class="innerchild"><span style="color:#789922">'.$rows["comm"].'</span></div>';
-                    }
-                    else
-                    {
-                        echo '<div class="innerchild">'.$rows["comm"].'</div>';
-                    }
-                    echo '</div><br>';
+                        // if ($rows["comm"][0] == '>')
+                        // {
+                        //     echo '<div class="innerchild"><span style="color:#789922">'.$rows["comm"].'</span></div>';
+                        // }
+                        // else
+                        // {
+                        //     echo '<div class="innerchild">'.$rows["comm"].'</div>';
+                        // }
+                        echo '<div class="innerchild"><pre>'.referenceComment($rows["comm"], $rows["parent"]).'</pre></div>';
+                        echo '</div><br>';
                     }
                 }
             ?>

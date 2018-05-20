@@ -24,7 +24,9 @@ $id = $_GET["id"]
             ?>
             <form name="delForm" action="delete.php" method="post">
                 <input type="hidden" name="checkArr" value=""/>
-                <input type="hidden" name="currentPage" value="index.php"/>
+                <?php
+                echo '<input type="hidden" name="currentPage" value="thread.php?id='.$id.'"/>';
+                ?>
             </form>
             <h1> Forum </h1>
         </div>
@@ -64,24 +66,21 @@ $id = $_GET["id"]
                             echo $rows["name"]." ".$rows["mail"]." (".$rows["date"].") No.";
                             echo '<a href="javascript:addToComment('.$rows["id"].');" name="'.$rows["id"].'" class="liketext" >'.$rows["id"].'</a> <br><br>';
                         }
-                        if ($rows["comm"][0] == '>') //fix so entire text doesnt turn green
-                        {
-                            $arr = explode(">", $rows["comm"]);
-                            echo '<div class="innerchild">';
-                            echo '<span style="color:#789922">'.$rows["comm"].'</span>';
-                            echo '</div>';
-                        }
-                        else
-                        {
-                            echo '<div class="innerchild">'.$rows["comm"].'</div>';
-                        }
-                        //Add functionality for replying to a post
-                        //Add functionality for deleting posts or threads
-                        //Add functionality to upboat
-                        //Remove fields for nonloggedin people
+                        // if ($rows["comm"][0] == '>') //fix so entire text doesnt turn green
+                        // {
+                        //     echo '<div class="innerchild">';
+                        //     echo '<span style="color:#789922">'.$rows["comm"].'</span>';
+                        //     echo '</div>';
+                        // }
+                        // else
+                        // {
+                        //     echo '<div class="innerchild">'.$rows["comm"].'</div>';
+                        // }
+                        //Add functionality to upvote
+                        echo '<div class="innerchild"><pre>'.referenceComment($rows["comm"], $rows["parent"]).'</pre></div>';
                         echo '</div><br>';
                     }
-                };
+                }
             ?>
         </div>
         <a name="bottomOfPage"></a>
