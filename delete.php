@@ -5,7 +5,7 @@ error_reporting(E_ALL | E_STRICT);
 include 'include/bootstrap.php';
 
 if(!isset($_SESSION["mail"])){
-    header("Location: index.php");
+    header("Location: ".$_POST["currentPage"]);
 } else {
     $mail = "";
     $location = "index.php";
