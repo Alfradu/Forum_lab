@@ -8,7 +8,7 @@
         <div id="form-login">
             <div id="login1">
                 <form name="regForm" action="testlogin.php" method="post" onsubmit="return validateLogin()">
-                    <input type="email" class="new-forms" name="mail" placeholder="Mail..." required pattern="*.[@].*.[.].*"><br>
+                    <input type="email" class="new-forms" name="mail" placeholder="Mail..." required pattern=".*[@].*[.].*"><br>
                     <input type="password" id="passval" class="new-forms" name="pass" placeholder="Password..." required><br>
                     <input type="submit" id="new-button" value="Send">
                     <label id="err">Fields cannot be empty!</label>
@@ -16,7 +16,7 @@
             </div>
             <div id="login2">
                 <form name="sendMail" action="sendMail.php" method="post">
-                    <input type="email" class="new-forms" name="mail" placeholder="Mail..." required pattern="*.[@].*.[.].*"><br>
+                    <input type="email" class="new-forms" name="mail" placeholder="Mail..." required pattern=".*[@].*[.].*"><br>
                     <input type="submit" id="mail-button" value="Reset password">
                 </form>
             </div>

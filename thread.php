@@ -38,7 +38,7 @@ $id = $_GET["id"]
                 if(isset($_SESSION["mail"])){
                     echo 'Mail: <input type="hidden" class="fields" name="mail" value="'.$_SESSION['mail'].'">'.$_SESSION['mail'].'</input><br>';
                 } else {
-                    echo '<input type="email" class="fields" name="mail" placeholder="Mail..." required pattern="*.[@].*.[.].*"><br>';
+                    echo '<input type="email" class="fields" name="mail" placeholder="Mail..." required pattern=".*[@].*[.].*"><br>';
                 }
                 ?>
                 <input type="text" id="field-name" class="fields" name="name" placeholder="Name..." required><br>
