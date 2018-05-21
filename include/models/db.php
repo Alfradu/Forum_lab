@@ -21,7 +21,7 @@ function makeUser($salt){
          handle_sql_errors($sql, $e->getMessage());
     }
 }
-function createPost($tempID){
+function createPost($tempID = 0){
     $sql = "INSERT INTO comments (name, mail, comm, parent) VALUES (:name, :mail, :comm, :tempId)";
     try {
         $stmt = getDb($sql);
@@ -32,6 +32,17 @@ function createPost($tempID){
             ':tempId'  => $tempID
         ]);
         return $stmt;
+    } catch (PDOException $e) {
+         handle_sql_errors($sql, $e->getMessage());
+    }
+}
+function updatePost($tempID){
+    $sql = "UPDATE comments SET parent= :tempId WHERE id= :tempId";
+    try {
+        $stmt = getDb($sql);
+        $stmt->execute([
+            ':tempId'  => $tempID
+        ]);
     } catch (PDOException $e) {
          handle_sql_errors($sql, $e->getMessage());
     }
