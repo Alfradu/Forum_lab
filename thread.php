@@ -76,7 +76,6 @@ $id = $_GET["id"]
                         // {
                         //     echo '<div class="innerchild">'.$rows["comm"].'</div>';
                         // }
-                        //Add functionality to upvote
                         echo '<div class="innerchild"><pre>'.referenceComment($rows["comm"], $rows["parent"]).'</pre></div>';
                         echo '</div><br>';
                     }
