@@ -3,7 +3,6 @@ function validateForm() {
     var comm = document.getElementById("field-text");
 
     if (name.value.trim() == "" || comm.value.trim() == "") {
-        //alert("Fields must be filled out"); dont alert plz
         document.getElementById("err").style.display = "inline";
         return false;
     }
@@ -41,7 +40,6 @@ function validateLogin(){
 }
 function addToComment(postnr){
     var comm = document.getElementById("field-text");
-    //alert("ran addToComment");
     comm.value = comm.value + " >>" + postnr + "\n";
 }
 function deleteComment(){

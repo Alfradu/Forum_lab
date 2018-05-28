@@ -8,8 +8,8 @@
         <div id="form-register">
             <div id="reg1">
                 <form name="regForm" action="testreg.php" method="post" onsubmit="return validateRegister()">
-                    <input type="email" id="mailval" class="new-forms" name="mail" placeholder="Mail..." required pattern=".*[@].*[.].*"><br>
-                    <input type="password" id="passval" class="new-forms" name="pass" placeholder="Password..." required><br>
+                    <input type="email" id="mailval" class="new-forms" name="mail" placeholder="Mail..." required pattern=".*[@].*[.].*">
+                    <input type="password" id="passval" class="new-forms" name="pass" placeholder="Password..." required>
                     <input type="submit" id="new-button" value="Send">
                     <label id="err">Fields cannot be empty!</label>
                 </form>

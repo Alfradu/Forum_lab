@@ -38,13 +38,13 @@ $id = $_GET["id"]
             ?>
                 <?php
                 if(isset($_SESSION["mail"])){
-                    echo 'Mail: <input type="hidden" class="fields" name="mail" value="'.$_SESSION['mail'].'">'.$_SESSION['mail'].'</input><br>';
+                    echo 'Mail: <input type="hidden" class="fields" name="mail" value="'.$_SESSION['mail'].'">'.$_SESSION['mail'].'</input>';
                 } else {
-                    echo '<input type="email" class="fields" name="mail" placeholder="Mail..." required pattern=".*[@].*[.].*"><br>';
+                    echo '<input type="email" class="fields" name="mail" placeholder="Mail..." required pattern=".*[@].*[.].*">';
                 }
                 ?>
-                <input type="text" id="field-name" class="fields" name="name" placeholder="Name..." required><br>
-                <textarea rows="10" id="field-text" cols="30" wrap="soft" class="fields" name="text" placeholder="Text..." required></textarea><br>
+                <input type="text" id="field-name" class="fields" name="name" placeholder="Name..." required>
+                <textarea rows="10" id="field-text" cols="30" wrap="soft" class="fields" name="text" placeholder="Text..." required></textarea>
                 <input type="submit" id="send-button" value="Send">
                 <label id="err">Fields cannot be empty!</label>
                 <input type="hidden" name="type" value="comment"/>
@@ -59,25 +59,16 @@ $id = $_GET["id"]
                 while($rows = $stmt->fetch()){
                     if ($rows["parent"] == $id){
                         if ($rows["parent"] == $rows["id"]){
-                            echo '<div class="flowparent"><label style="color:#b294ac">'.$rows["name"]."</label> ".$rows["mail"]." (".$rows["date"].") No.";
-                            echo '<a href="javascript:addToComment('.$rows["id"].');" name="'.$rows["id"].'" class="liketext" >'.$rows["id"].'</a> <br><br>';
+                            echo '<div class="flowparent">'.$rows["mail"].' ('.$rows["date"].') No.
+                                <a href="javascript:addToComment('.$rows["id"].');" name="'.$rows["id"].'" class="liketext" >'.$rows["id"].'</a>
+                                <div class="innerchild"><h2>'.$rows['name'].'</h2><pre>'.referenceComment($rows["comm"], $rows["parent"]).'</pre></div>';
                         } else {
-                            echo '<div class="flowchild"><input type="checkbox" class= "check" name="'.$rows["id"].'"/> ';
-                            echo $rows["name"]." ".$rows["mail"]." (".$rows["date"].") No.";
-                            echo '<a href="javascript:addToComment('.$rows["id"].');" name="'.$rows["id"].'" class="liketext" >'.$rows["id"].'</a> <br><br>';
+                            echo '<div class="flowchild"><input type="checkbox" class= "check" name="'.$rows["id"].'"/>
+                                '.$rows["name"].' '.$rows["mail"].' ('.$rows["date"].') No.
+                                <a href="javascript:addToComment('.$rows["id"].');" name="'.$rows["id"].'" class="liketext" >'.$rows["id"].'</a>
+                                <div class="innerchild"><pre>'.referenceComment($rows["comm"], $rows["parent"]).'</pre></div>';
                         }
-                        // if ($rows["comm"][0] == '>') //fix so entire text doesnt turn green
-                        // {
-                        //     echo '<div class="innerchild">';
-                        //     echo '<span style="color:#789922">'.$rows["comm"].'</span>';
-                        //     echo '</div>';
-                        // }
-                        // else
-                        // {
-                        //     echo '<div class="innerchild">'.$rows["comm"].'</div>';
-                        // }
-                        echo '<div class="innerchild"><pre>'.referenceComment($rows["comm"], $rows["parent"]).'</pre></div>';
-                        echo '</div><br>';
+                        echo '</div>';
                     }
                 }
             ?>

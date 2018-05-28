@@ -10,8 +10,8 @@ $stmt = getcomments();
             if(isset($_SESSION["mail"])){
                 echo '<label>[</label><a href="logout.php" class="likeabutton">Logout</a><label>]</label>';
             } else {
-                echo '<label>[</label><a href="register.php" class="likeabutton">Register</a><label>]</label>';
-                echo '<label>[</label><a href="login.php" class="likeabutton">Login</a><label>]</label>';
+                echo '<label>[</label><a href="register.php" class="likeabutton">Register</a><label>]</label>
+                     <label>[</label><a href="login.php" class="likeabutton">Login</a><label>]</label>';
             }
             echo '<label>[</label><a href="javascript: deleteComment();" class="likeabutton">Delete</a><label>]</label>';
             ?>
@@ -23,15 +23,16 @@ $stmt = getcomments();
         </div>
         <?php
             if(isset($_SESSION["mail"])){
-                echo '<div id="form">';
-                echo '<label id="reply">Create new thread</label>';
-                echo '<form name="commForm" action="process.php" method="post" onsubmit="return validateForm()">';
-                echo 'Mail: <input type="hidden" class="fields" name="mail" value="'.$_SESSION['mail'].'">'.$_SESSION['mail'].'</input><br>';
-                echo '<input type="text" id="field-name" class="fields" name="name" placeholder="Topic..." required><br>';
-                echo '<textarea rows="10" id="field-text" cols="30" wrap="soft" class="fields" name="text" placeholder="Text..." required></textarea><br>';
-                echo '<input type="submit" id="send-button" value="Create">';
-                echo '<label id="err">Fields cannot be empty!</label>';
-                echo '<input type="hidden" name="type" value="thread"/></form></div>';
+                echo '<div id="form">
+                    <label id="reply">Create new thread</label>
+                    <form name="commForm" action="process.php" method="post" onsubmit="return validateForm()">
+                    Mail: <input type="hidden" class="fields" name="mail" value="'.$_SESSION['mail'].'">'.$_SESSION['mail'].'</input>
+                    <input type="text" id="field-name" class="fields" name="name" placeholder="Topic..." required>
+                    <textarea rows="10" id="field-text" cols="30" wrap="soft" class="fields" name="text" placeholder="Text..." required></textarea>
+                    <input type="submit" id="send-button" value="Create">
+                    <label id="err">Fields cannot be empty!</label>
+                    <input type="hidden" name="type" value="thread"/></form>
+                    </div>';
             }
         ?>
         <a name="topOfPage"></a>
@@ -42,20 +43,15 @@ $stmt = getcomments();
             <?php
                 while($rows = $stmt->fetch()){
                     if ($rows["parent"] == $rows["id"]){
-                        echo '<div class="flowchild"> <input type="checkbox" class= "check" name="'.$rows["id"].'"/> ';
-                        echo '<label style="color:#b294ac">'.$rows["name"]."</label> ".$rows["mail"]." (".$rows["date"].") No.";
-                        echo '<a href="thread.php?id='.$rows["id"].'" name="'.$rows["id"].'" class="liketext" >'.$rows["id"].'</a> ';
-                        echo '<label>[</label><a href="thread.php?id='.$rows["id"].'" class="likeabutton">Reply</a><label>]</label> <br><br>';
-                        // if ($rows["comm"][0] == '>')
-                        // {
-                        //     echo '<div class="innerchild"><span style="color:#789922">'.$rows["comm"].'</span></div>';
-                        // }
-                        // else
-                        // {
-                        //     echo '<div class="innerchild">'.$rows["comm"].'</div>';
-                        // }
-                        echo '<div class="innerchild"><pre>'.referenceComment($rows["comm"], $rows["parent"]).'</pre></div>';
-                        echo '</div><br>';
+                        echo '<div class="flowchild"> <input type="checkbox" class= "check" name="'.$rows["id"].'"/>
+                            '.$rows["mail"].' ('.$rows["date"].') No.
+                            <a href="thread.php?id='.$rows["id"].'" name="'.$rows["id"].'" class="liketext" >'.$rows["id"].'</a>
+                            <label>[</label><a href="thread.php?id='.$rows["id"].'" class="likeabutton">Reply</a><label>]</label>
+
+
+                            <div class="innerchild"><h2>'.$rows["name"].'</h2>
+                            <pre>'.referenceComment($rows["comm"], $rows["parent"]).'</pre></div>
+                            </div>';
                     }
                 }
             ?>
