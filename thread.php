@@ -59,7 +59,7 @@ $id = $_GET["id"]
                 while($rows = $stmt->fetch()){
                     if ($rows["parent"] == $id){
                         if ($rows["parent"] == $rows["id"]){
-                            echo '<div class="flowparent">'.$rows["mail"].' ('.$rows["date"].') No.
+                            echo '<div class="flowparent"> '.$rows["mail"].' ('.$rows["date"].') No.
                                 <a href="javascript:addToComment('.$rows["id"].');" name="'.$rows["id"].'" class="liketext" >'.$rows["id"].'</a>
                                 <div class="innerchild"><h2>'.$rows['name'].'</h2><pre>'.referenceComment($rows["comm"], $rows["parent"]).'</pre></div>';
                         } else {
