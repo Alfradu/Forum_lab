@@ -26,7 +26,7 @@ $stmt = getcomments();
                 echo '<div id="form">
                     <label id="reply">Create new thread</label>
                     <form name="commForm" action="process.php" method="post" onsubmit="return validateForm()">
-                    Mail: <input type="hidden" class="fields" name="mail" value="'.$_SESSION['mail'].'">'.$_SESSION['mail'].'</input>
+                    <label id="reply"> Mail: </label><input type="hidden" class="fields" name="mail" value="'.$_SESSION['mail'].'">'.$_SESSION['mail'].'</input>
                     <input type="text" id="field-name" class="fields" name="name" placeholder="Topic..." required>
                     <textarea rows="10" id="field-text" cols="30" wrap="soft" class="fields" name="text" placeholder="Text..." required></textarea>
                     <input type="submit" id="send-button" value="Create">
