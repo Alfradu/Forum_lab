@@ -13,7 +13,7 @@ $stmt = getcomments();
                 echo '<label>[</label><a href="register.php" class="likeabutton">Register</a><label>]</label>
                      <label>[</label><a href="login.php" class="likeabutton">Login</a><label>]</label>';
             }
-            echo '<label>[</label><a href="javascript: deleteComment();" class="likeabutton">Delete</a><label>]</label>';
+            echo '<label> [</label><a href="javascript: deleteComment();" class="likeabutton">Delete</a><label>]</label>';
             ?>
             <form name="delForm" action="delete.php" method="post">
                 <input type="hidden" name="checkArr" value=""/>

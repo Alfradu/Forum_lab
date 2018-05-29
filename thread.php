@@ -28,12 +28,12 @@ $id = $_GET["id"]
             echo '<input type="hidden" name="currentPage" value="thread.php?id='.$id.'"/>';
             ?>
         </form>
-        <h1> Forum </h1>
+        <h1> Thread <?php echo $id;?></h1>
     </div>
     <?php
     if(isset($_SESSION["mail"])){
         echo '<div id="form">
-        <label id="reply">Reply to thread</label>';
+        <label id="reply">Reply to thread </label>';
         echo $id;
         echo '<form name="commForm" action="process.php?id='.$id.'" method="post" onsubmit="return validateForm()">
         <label id="reply"> Mail: </label><input type="hidden" class="fields" name="mail" value="'.$_SESSION['mail'].'">'.$_SESSION['mail'].'</input>
