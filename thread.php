@@ -13,12 +13,12 @@ $id = $_GET["id"]
 <body>
     <div class="topbar">
         <?php
-        echo '<label>[</label><a href="index.php" class="likeabutton">Return</a><label>]</label>';
+        echo '<label>[</label><a href="index.php" class="likeabutton">Return</a><label>] </label>';
         if(isset($_SESSION["mail"])){
-            echo '<label>[</label><a href="logout.php" class="likeabutton">Logout</a><label>]</label>';
+            echo '<label>[</label><a href="logout.php" class="likeabutton">Logout</a><label>] </label>';
         } else {
-            echo '<label>[</label><a href="register.php" class="likeabutton">Register</a><label>]</label>';
-            echo '<label>[</label><a href="login.php" class="likeabutton">Login</a><label>]</label>';
+            echo '<label>[</label><a href="register.php" class="likeabutton">Register</a><label>] </label>';
+            echo '<label>[</label><a href="login.php" class="likeabutton">Login</a><label>] </label>';
         }
         echo '<label>[</label><a href="javascript: deleteComment();" class="likeabutton">Delete</a><label>]</label>';
         ?>
